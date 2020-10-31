@@ -54,4 +54,17 @@ const removeData = async (key) => {
     }
 };
 
-export { storeData, storeDataJSON, getData, getDataJSON, removeData };
+const addDataJSON = async (key, value) => {
+    try {
+      let val = await AsyncStorage.getItem(key);
+      val = JSON.parse(val);
+      val.push(value);
+      const jsonValue = JSON.stringify(val);
+      await AsyncStorage.setItem(key, jsonValue);
+      alert('Data Added Successfully!');
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+export { storeData, storeDataJSON, getData, getDataJSON, removeData, addDataJSON};

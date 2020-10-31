@@ -35,18 +35,15 @@ const ProfileScreen = (props) => {
 
           <ImageBackground source={image} style={styles.image}>
 
-            <Card containerStyle={{marginHorizontal:30}}>
               <Image
                 marginTop={50}
-                style={{ width: 100, height: 100, }}
+                style={{ width: 200, height: 200, }}
                 resizeMode="contain"
                 alignSelf="center"
                 source={require('./../../assets/photo.jpg')}
               />
 
-              <Text></Text>
 
-              <Card.Divider />
 
               <Text style={styles.textStyle2}>{auth.Currentuser.name}</Text>
 
@@ -56,21 +53,14 @@ const ProfileScreen = (props) => {
               />
 
 
-
-              
-
-
-            </Card>
-
-            <Text></Text>
           <Text style={styles.textStyle2}>Here's Detail About {auth.Currentuser.name}</Text>
+ 
             <Text></Text>
-            <Text></Text>
-            <Text></Text>
+            
 
             
 
-
+            <Card.Divider></Card.Divider>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' ,marginStart:10}}>
               <FontAwesome name="calendar" size={24} color="black"/>
@@ -86,18 +76,14 @@ const ProfileScreen = (props) => {
               <MaterialIcons name="work" size={24} color="black" />
               <Text style={styles.textStyle}>Works At, SamSung RnD</Text>
             </View>
-
+            <Card.Divider></Card.Divider>
 
             <Text></Text>
-
-
-
-
-
-
-
-
-
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
 
 
 

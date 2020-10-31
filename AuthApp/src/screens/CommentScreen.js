@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { ScrollView, View, StyleSheet, FlatList } from "react-native";
 import {
     Card,
     Button,
@@ -8,224 +8,138 @@ import {
     Input,
     Header,
 } from "react-native-elements";
+import moment from 'moment';
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../Provider/AuthProvider";
+import CommentComponent from "../components/CommentComponent";
+import { getDataJSON, storeDataJSON, addDataJSON, } from '../functions/AsyncStorageFunctions';
 
 const CommentScreen = (props) => {
 
-    const post =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+    let info = props.route.params;
+    const [comment, setComment] = useState('');
+    const [comments, setComments] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+    const [postcomments, setPostComments] = useState([]);
+
+    const loadComments = async () => {
+        let allcomments = await getDataJSON('Comments');
+        setComments(allcomments);
+        setPostComments(allcomments.filter((el) => el.postid == info.postid));
+    };
+    const loadNotifications = async () => {
+        let allnotifications = await getDataJSON('Notifications');
+        setNotifications(allnotifications);
+    };
+
+    useEffect(() => {
+        loadComments();
+        loadNotifications();
+    }, []);
+
 
     return (
-        <AuthContext.Consumer>
-            {(auth) => (
-                <View style={styles.viewStyle}>
-                    <Header
-                        leftComponent={{
-                            icon: "menu",
-                            color: "#fff",
-                            onPress: function () {
-                                props.navigation.toggleDrawer();
-                            },
-                        }}
-                        centerComponent={{ text: "The Office", style: { color: "#fff" } }}
-                        rightComponent={{
-                            icon: "lock-outline",
-                            color: "#fff",
-                            onPress: function () {
-                                auth.setisLoggedIn(false);
-                                auth.setCurrentuser({});
-                            },
-                        }}
+
+        <View style={styles.viewStyle}>
+            <Header
+                leftComponent={{
+                    icon: "menu",
+                    color: "#fff",
+                    onPress: function () {
+                        props.navigation.toggleDrawer();
+                    },
+                }}
+                centerComponent={{ text: "The Office", style: { color: "#fff" } }}
+                rightComponent={{
+                    icon: "lock-outline",
+                    color: "#fff",
+                    onPress: function () {
+                        auth.setisLoggedIn(false);
+                        auth.setCurrentuser({});
+                    },
+                }}
+            />
+
+            <ScrollView>
+
+            <Card>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
+                    <Avatar
+                        containerStyle={{ backgroundColor: "#ffab91" }}
+                        rounded
+                        icon={{ name: "user", type: "font-awesome", color: "black" }}
+                        activeOpacity={1}
                     />
-                    {/* <Card>
-                        <Input
-                            placeholder="What's On Your Mind?"
-                            leftIcon={<Entypo name="pencil" size={24} color="black" />}
-                        />
-                        <Button title="Post" type="outline" onPress={function () { }} />
-                    </Card> */}
-                    <ScrollView>
-                    <Card>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Avatar
-                                containerStyle={{ backgroundColor: "#ffab91" }}
-                                rounded
-                                icon={{ name: "user", type: "font-awesome", color: "black" }}
-                                activeOpacity={1}
-                            />
-                            <Text h4Style={{ padding: 10 }} h4>
-                                Jim Halpert
-                  </Text>
-                        </View>
-                        <Text style={{ fontStyle: "italic" }}> Posted on 10 Aug, 2020</Text>
-                        <Text
-                            style={{
-                                paddingVertical: 10,
-                            }}
-                        >
-                            {post}
-                        </Text>
-                        <Card.Divider />
-                        <View
-                            style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
-                        >
-                            <Button
-                                type="solid"
-                                title="  Like (21)"
-                                icon={<AntDesign name="like2" size={24} color="#ffffff" />}
-                            />
-                            
-                            
-                        </View>
-                    </Card>
-
-                    <Card>
-                        <Input
-                            placeholder="Write Something"
-                            leftIcon={<Entypo name="pencil" size={24} color="black" />}
-                        />
-                        <Button title="Comment" type="outline" onPress={function () { }} />
-                    </Card>
-
-
-
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-
-
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-                    <Card>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Avatar
-                                containerStyle={{ backgroundColor: "cyan" }}
-                                rounded
-                                icon={{
-                                    name: "thumbs-o-up",
-                                    type: "font-awesome",
-                                    color: "black",
-                                }}
-                                activeOpacity={1}
-                            />
-                            <Text style={{ paddingHorizontal: 10 }}>
-                                Pam Beesley Liked Your Post.
-              </Text>
-                        </View>
-                    </Card>
-
-                    </ScrollView>
-
-
-
+                    <Text h4Style={{ padding: 10 }} h4>
+                        {info.user.name}
+                    </Text>
+                </View>
+                <Text style={{ fontStyle: "italic" }}> Posted on {info.time}</Text>
+                <Text
+                    style={{
+                        paddingVertical: 10,
+                    }}
+                >
+                    {info.body}
+                </Text>
+                <Card.Divider />
+                <View
+                    style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+                >
+                    <Button
+                        type="solid"
+                        title="  Like (21)"
+                        icon={<AntDesign name="like2" size={24} color="#ffffff" />}
+                    />
 
 
                 </View>
-            )}
-        </AuthContext.Consumer>
+            </Card>
+
+            <Card>
+                <Input
+                    placeholder="Write Something"
+                    leftIcon={<Entypo name="pencil" size={24} color="black" />}
+                    onChangeText={function (currentInput) {
+                        setComment(currentInput)
+                    }}
+
+                />
+                <Button title="Comment" type="outline" onPress={function () {
+
+                }} />
+            </Card>
+
+
+
+            <FlatList
+                //ListHeaderComponent={Loadpost(auth)}
+                data={postcomments}
+                renderItem={({ item }) => {
+                    return (
+                        <CommentComponent
+                            name={item.user.name}
+                            time={'Commented on ' + item.time}
+                            comment={item.body}
+                        />
+
+                    )
+                }}
+            />
+
+
+        </ScrollView>
+
+
+
+        </View>
+
+
     )
 
 }
