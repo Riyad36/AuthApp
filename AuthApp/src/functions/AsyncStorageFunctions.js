@@ -67,4 +67,4 @@ const addDataJSON = async (key, value) => {
     }
   };
 
-export { storeData, storeDataJSON, getData, getDataJSON, removeData, addDataJSON};
+export { storeData, storeDataJSON, getData, getDataJSON, removeData, addDataJSON };

@@ -19,125 +19,153 @@ const CommentScreen = (props) => {
     let info = props.route.params;
     const [comment, setComment] = useState('');
     const [comments, setComments] = useState([]);
-    const [notifications, setNotifications] = useState([]);
     const [postcomments, setPostComments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const loadComments = async () => {
+        setLoading(true);
         let allcomments = await getDataJSON('Comments');
         setComments(allcomments);
-        setPostComments(allcomments.filter((el) => el.postid == info.postid));
-    };
-    const loadNotifications = async () => {
-        let allnotifications = await getDataJSON('Notifications');
-        setNotifications(allnotifications);
+        if (allcomments != null) {
+            setPostComments(allcomments.filter((el) => el.postid == info.postid));
+        } else {
+            setPostComments([]);
+        }
     };
 
     useEffect(() => {
         loadComments();
-        loadNotifications();
     }, []);
 
 
     return (
 
-        <View style={styles.viewStyle}>
-            <Header
-                leftComponent={{
-                    icon: "menu",
-                    color: "#fff",
-                    onPress: function () {
-                        props.navigation.toggleDrawer();
-                    },
-                }}
-                centerComponent={{ text: "The Office", style: { color: "#fff" } }}
-                rightComponent={{
-                    icon: "lock-outline",
-                    color: "#fff",
-                    onPress: function () {
-                        auth.setisLoggedIn(false);
-                        auth.setCurrentuser({});
-                    },
-                }}
-            />
+        <AuthContext.Consumer>
+            {(auth) => (
 
-            <ScrollView>
-
-            <Card>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                    }}
-                >
-                    <Avatar
-                        containerStyle={{ backgroundColor: "#ffab91" }}
-                        rounded
-                        icon={{ name: "user", type: "font-awesome", color: "black" }}
-                        activeOpacity={1}
-                    />
-                    <Text h4Style={{ padding: 10 }} h4>
-                        {info.user.name}
-                    </Text>
-                </View>
-                <Text style={{ fontStyle: "italic" }}> Posted on {info.time}</Text>
-                <Text
-                    style={{
-                        paddingVertical: 10,
-                    }}
-                >
-                    {info.body}
-                </Text>
-                <Card.Divider />
-                <View
-                    style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
-                >
-                    <Button
-                        type="solid"
-                        title="  Like (21)"
-                        icon={<AntDesign name="like2" size={24} color="#ffffff" />}
+                <View style={styles.viewStyle}>
+                    <Header
+                        leftComponent={{
+                            icon: "menu",
+                            color: "#fff",
+                            onPress: function () {
+                                props.navigation.toggleDrawer();
+                            },
+                        }}
+                        centerComponent={{ text: "The Office", style: { color: "#fff" } }}
+                        rightComponent={{
+                            icon: "lock-outline",
+                            color: "#fff",
+                            onPress: function () {
+                                auth.setisLoggedIn(false);
+                                auth.setCurrentuser({});
+                            },
+                        }}
                     />
 
+                    <ScrollView>
 
-                </View>
-            </Card>
+                        <Card>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Avatar
+                                    containerStyle={{ backgroundColor: "#ffab91" }}
+                                    rounded
+                                    icon={{ name: "user", type: "font-awesome", color: "black" }}
+                                    activeOpacity={1}
+                                />
+                                <Text h4Style={{ padding: 10 }} h4>
+                                    {info.user.name}
+                                </Text>
+                            </View>
+                            <Text style={{ fontStyle: "italic" }}> Posted on {info.time}</Text>
+                            <Text
+                                style={{
+                                    paddingVertical: 10,
+                                }}
+                            >
+                                {info.body}
+                            </Text>
+                            <Card.Divider />
+                            <View
+                                style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+                            >
+                                <Button
+                                    type="solid"
+                                    title="  Like  "
+                                    icon={<AntDesign name="like2" size={24} color="#ffffff" />}
+                                />
 
-            <Card>
-                <Input
-                    placeholder="Write Something"
-                    leftIcon={<Entypo name="pencil" size={24} color="black" />}
-                    onChangeText={function (currentInput) {
-                        setComment(currentInput)
-                    }}
 
-                />
-                <Button title="Comment" type="outline" onPress={function () {
+                            </View>
+                        </Card>
 
-                }} />
-            </Card>
+                        <Card>
+                            <Input
+                                placeholder="Write a Comment"
+                                leftIcon={<Entypo name="pencil" size={24} color="black" />}
+                                onChangeText={function (currentInput) {
+                                    setComment(currentInput)
+                                }}
+
+                            />
+                            <Button title="Comment" type="outline" onPress={function () {
+
+
+                                let newcomment = {
+
+                                    postid: info.postid,
+                                    user: auth.Currentuser,
+                                    time: moment().format('DD MMM, YYYY'),
+                                    body: comment,
+                                };
+
+                                if (postcomments == undefined) {
+                                    setPostComments([newcomment]);
+                                } else {
+                                    setPostComments([...postcomments, newcomment]);
+                                }
+
+                                if (comments == undefined) {
+                                    setComments([newcomment]);
+                                    storeDataJSON('Comments', [newcomment]);
+                                } else {
+                                    setComments([...comments, newcomment]);
+                                    addDataJSON('Comments', newcomment);
+                                }
+                            }} />
+                        </Card>
 
 
 
-            <FlatList
-                //ListHeaderComponent={Loadpost(auth)}
-                data={postcomments}
-                renderItem={({ item }) => {
-                    return (
-                        <CommentComponent
-                            name={item.user.name}
-                            time={'Commented on ' + item.time}
-                            comment={item.body}
+                        <FlatList
+                            data={postcomments}
+                            inverted={true}
+                            renderItem={({ item }) => {
+                                return (
+                                    <CommentComponent
+                                        name={item.user.name}
+                                        time={'Commented on ' + item.time}
+                                        comment={item.body}
+                                    />
+
+                                )
+                            }}
                         />
 
-                    )
-                }}
-            />
 
-
-        </ScrollView>
+                    </ScrollView>
 
 
 
-        </View>
+                </View>
+
+            )}
+        </AuthContext.Consumer>
 
 
     )
@@ -151,6 +179,7 @@ const styles = StyleSheet.create({
     },
     viewStyle: {
         flex: 1,
+        backgroundColor: "#DCDDDF",
     },
 }
 );

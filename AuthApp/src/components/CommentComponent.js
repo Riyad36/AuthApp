@@ -13,28 +13,36 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 
 
-const CommentComponent= (props) => {
+const CommentComponent = (props) => {
 
-    return(
+    return (
 
 
-            <Card>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Avatar
-                        containerStyle={{ backgroundColor: "cyan" }}
-                        rounded
-                        icon={{
-                            name: "thumbs-o-up",
-                            type: "font-awesome",
-                            color: "black",
-                        }}
-                        activeOpacity={1}
-                    />
-                    <Text style={{ paddingHorizontal: 10 }}>
-                        Pam Beesley Liked Your Post.
-              </Text>
+        <Card>
+            <View style={{
+                flexDirection: "row",
+                alignItems: "center"
+            }}>
+                <Avatar
+                    containerStyle={{ backgroundColor: "#1983ED" }}
+                    rounded
+                    icon={{ name: "user", type: "font-awesome", color: "black" }}
+                    activeOpacity={1}
+                />
+
+                <Text h4Style={{ paddingHorizontal: 10 }} h4>
+                    {props.name}
+                </Text>
+                <Text style={{ fontStyle: 'italic', fontSize: 10, textAlign: 'right' }}>
+                    {props.time}
+                </Text>
                 </View>
-            </Card>
+                
+
+                <Text style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                    <Text>{props.comment}</Text>
+                </Text>
+        </Card>
 
 
     )

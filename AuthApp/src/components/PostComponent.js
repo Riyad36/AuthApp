@@ -49,12 +49,12 @@ const PostComponent = (props) => {
             >
                 <Button
                     type="outline"
-                    title="  Like (21)"
+                    title="  Like  "
                     icon={<AntDesign name="like2" size={24} color="dodgerblue" />}
                 />
                 <Button
                     type="solid"
-                    title="Comment (7)"
+                    title="Comment  "
                     onPress={function () {
                         //auth.setisLoggedIn(true);
                         props.navigation.navigate('Comments', props.post);

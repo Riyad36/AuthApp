@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, StyleSheet,FlatList } from "react-native";
+import { ScrollView, View, StyleSheet, FlatList } from "react-native";
 import {
   Card,
   Button,
@@ -21,41 +21,6 @@ const HomeScreen = (props) => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState('');
 
-
-  const Inputcard = (auth) => {
-    return (
-      <Card>
-        <Input
-          placeholder="What's On Your Mind?"
-          leftIcon={<Entypo name="pencil" size={24} color="black" />}
-          onChangeText={function (currentInput) {
-            setPost(currentInput);
-          }}
-        />
-        <Button
-          title="Post"
-          type="outline"
-          onPress={function () {
-            let newpost = {
-              user: auth.Currentuser,
-              time: moment().format('DD MMM, YYYY'),
-              postid:
-                auth.Currentuser.email +
-                moment().format('YYYY-MM-DD hh:mm:ss a'),
-              body: post,
-            };
-            if (posts == undefined) {
-              setPosts([newpost]);
-              storeDataJSON('Posts', [newpost]);
-            } else {
-              setPosts([...posts, newpost]);
-              addDataJSON('Posts', newpost);
-            }
-          }}
-        />
-      </Card>
-    );
-  };
   const loadPosts = async () => {
     setLoading(true);
 
@@ -66,7 +31,6 @@ const HomeScreen = (props) => {
   useEffect(() => {
     loadPosts();
   }, []);
-
 
 
   return (
@@ -95,25 +59,63 @@ const HomeScreen = (props) => {
             }}
           />
 
+          <ScrollView>
 
-          <FlatList
-            ListHeaderComponent={Inputcard(auth)}
-            data={posts}
-            renderItem={({ item }) => {
-              return (
-                <PostComponent
-                  author={item.user.name}
-                  title={'Posted on ' + item.time}
-                  body={item.body}
-                  navigation={props.navigation}
-                  post={item}
-                />
-              );
-            }}
-          />
 
+            <Card>
+              <Input
+                placeholder="What's On Your Mind?"
+                leftIcon={<Entypo name="pencil" size={24} color="black" />}
+                onChangeText={function (currentInput) {
+                  setPost(currentInput);
+                }}
+              />
+              <Button
+                title="Post"
+                type="outline"
+                onPress={function () {
+                  let newpost = {
+                    user: auth.Currentuser,
+                    time: moment().format('DD MMM, YYYY'),
+                    postid:
+                      auth.Currentuser.email +
+                      moment().format('YYYY-MM-DD hh:mm:ss a'),
+                    body: post,
+                  };
+                  if (posts == undefined) {
+                    setPosts([newpost]);
+                    storeDataJSON('Posts', [newpost]);
+                  } else {
+                    setPosts([...posts, newpost]);
+                    addDataJSON('Posts', newpost);
+                  }
+                }}
+                
+              />
+
+            </Card>
+
+
+            <FlatList
+              data={posts}
+              inverted={true}
+              renderItem={({ item }) => {
+                return (
+                  <PostComponent
+                    author={item.user.name}
+                    title={'Posted on ' + item.time}
+                    body={item.body}
+                    navigation={props.navigation}
+                    post={item}
+                  />
+                );
+              }}
+            />
+
+          </ScrollView>
 
         </View>
+
       )}
     </AuthContext.Consumer>
   );
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
   },
   viewStyle: {
     flex: 1,
+    backgroundColor:"#DCDDDF",
   },
 }
 );

@@ -35,50 +35,53 @@ const ProfileScreen = (props) => {
 
           <ImageBackground source={image} style={styles.image}>
 
-              <Image
-                marginTop={50}
-                style={{ width: 200, height: 200, }}
-                resizeMode="contain"
-                alignSelf="center"
-                source={require('./../../assets/photo.jpg')}
-              />
+            <Image
+              marginTop={50}
+              style={{ width: 200, height: 200, }}
+              resizeMode="contain"
+              alignSelf="center"
+              source={require('./../../assets/photo.jpg')}
+            />
 
-
-
-              <Text style={styles.textStyle2}>{auth.Currentuser.name}</Text>
-
-              <Button
-                title='Delete Profile'
-                type='outline'
-              />
-
-
-          <Text style={styles.textStyle2}>Here's Detail About {auth.Currentuser.name}</Text>
- 
             <Text></Text>
-            
 
-            
+
+            <Text style={styles.textStyle2}>{auth.Currentuser.name}</Text>
+
+            <View
+              style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+            >
+              <Button
+                type="solid"
+                title="Delete Profile"
+              />
+
+            </View>
+
+
+            <Text style={styles.textStyle2}>Here's Detail About {auth.Currentuser.name}</Text>
+
+
+
 
             <Card.Divider></Card.Divider>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' ,marginStart:10}}>
-              <FontAwesome name="calendar" size={24} color="black"/>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
+              <FontAwesome name="calendar" size={24} color="black" />
               <Text style={styles.textStyle}>Born On 15th March,1997</Text>
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' ,marginStart:10}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
               <MaterialIcons name="place" size={24} color="black" />
               <Text style={styles.textStyle}>Address: Pabna Sadar,pabna</Text>
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' ,marginStart:10}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
               <MaterialIcons name="work" size={24} color="black" />
               <Text style={styles.textStyle}>Works At, SamSung RnD</Text>
             </View>
             <Card.Divider></Card.Divider>
 
-            <Text></Text>
             <Text></Text>
             <Text></Text>
             <Text></Text>
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 18,
     padding: 10,
-    marginStart:20,
+    marginStart: 20,
   },
   viewStyle: {
     justifyContent: 'flex-start',
@@ -112,7 +115,6 @@ const styles = StyleSheet.create({
     color: "#000000",
     justifyContent: 'center',
     marginVertical: 20,
-    marginTop: 40,
     textAlign: 'center'
 
   },

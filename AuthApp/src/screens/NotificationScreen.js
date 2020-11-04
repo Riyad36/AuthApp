@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     },
     viewStyle: {
         flex: 1,
+        backgroundColor:"#DCDDDF",
     },
 });
 
