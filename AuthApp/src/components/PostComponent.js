@@ -35,10 +35,11 @@ const PostComponent = (props) => {
                 />
                 <Text h4Style={{ padding: 10 }} h4>{props.author}</Text>
             </View>
-            <Text style={{ fontStyle: "italic" }}> {props.title}</Text>
+            <Text style={{ fontStyle: "italic", fontSize: 10 }}> {props.title}</Text>
             <Text
                 style={{
                     paddingVertical: 10,
+                    fontSize: 16,
                 }}
             >
                 {props.body}

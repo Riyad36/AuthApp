@@ -39,7 +39,8 @@ const HomeScreen = (props) => {
       {(auth) => (
 
 
-        <View style={styles.viewStyle}>
+        <ScrollView style={styles.viewStyle}>
+          <View>
           <Header
             leftComponent={{
               icon: "menu",
@@ -58,8 +59,6 @@ const HomeScreen = (props) => {
               },
             }}
           />
-
-          <ScrollView>
 
 
             <Card>
@@ -90,31 +89,33 @@ const HomeScreen = (props) => {
                     addDataJSON('Posts', newpost);
                   }
                 }}
-                
+
               />
 
             </Card>
+            </View>
 
 
-            <FlatList
-              data={posts}
-              inverted={true}
-              renderItem={({ item }) => {
-                return (
-                  <PostComponent
-                    author={item.user.name}
-                    title={'Posted on ' + item.time}
-                    body={item.body}
-                    navigation={props.navigation}
-                    post={item}
-                  />
-                );
-              }}
-            />
 
-          </ScrollView>
 
-        </View>
+          <FlatList
+            data={posts}
+            inverted={true}
+            keyExtractor={(item) => item.postid}
+            renderItem={({ item }) => {
+              return (
+                <PostComponent
+                  author={item.user.name}
+                  title={item.time}
+                  body={item.body}
+                  navigation={props.navigation}
+                  post={item}
+                />
+              );
+            }}
+          />
+
+        </ScrollView>
 
       )}
     </AuthContext.Consumer>
@@ -127,9 +128,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "blue",
   },
+  
   viewStyle: {
     flex: 1,
-    backgroundColor:"#DCDDDF",
+    backgroundColor: "#DCDDDF",
   },
 }
 );

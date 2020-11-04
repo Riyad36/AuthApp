@@ -63,102 +63,100 @@ const CommentScreen = (props) => {
                         }}
                     />
 
-                    <ScrollView>
 
-                        <Card>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Avatar
-                                    containerStyle={{ backgroundColor: "#ffab91" }}
-                                    rounded
-                                    icon={{ name: "user", type: "font-awesome", color: "black" }}
-                                    activeOpacity={1}
-                                />
-                                <Text h4Style={{ padding: 10 }} h4>
-                                    {info.user.name}
-                                </Text>
-                            </View>
-                            <Text style={{ fontStyle: "italic" }}> Posted on {info.time}</Text>
-                            <Text
-                                style={{
-                                    paddingVertical: 10,
-                                }}
-                            >
-                                {info.body}
-                            </Text>
-                            <Card.Divider />
-                            <View
-                                style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
-                            >
-                                <Button
-                                    type="solid"
-                                    title="  Like  "
-                                    icon={<AntDesign name="like2" size={24} color="#ffffff" />}
-                                />
-
-
-                            </View>
-                        </Card>
-
-                        <Card>
-                            <Input
-                                placeholder="Write a Comment"
-                                leftIcon={<Entypo name="pencil" size={24} color="black" />}
-                                onChangeText={function (currentInput) {
-                                    setComment(currentInput)
-                                }}
-
-                            />
-                            <Button title="Comment" type="outline" onPress={function () {
-
-
-                                let newcomment = {
-
-                                    postid: info.postid,
-                                    user: auth.Currentuser,
-                                    time: moment().format('DD MMM, YYYY'),
-                                    body: comment,
-                                };
-
-                                if (postcomments == undefined) {
-                                    setPostComments([newcomment]);
-                                } else {
-                                    setPostComments([...postcomments, newcomment]);
-                                }
-
-                                if (comments == undefined) {
-                                    setComments([newcomment]);
-                                    storeDataJSON('Comments', [newcomment]);
-                                } else {
-                                    setComments([...comments, newcomment]);
-                                    addDataJSON('Comments', newcomment);
-                                }
-                            }} />
-                        </Card>
-
-
-
-                        <FlatList
-                            data={postcomments}
-                            inverted={true}
-                            renderItem={({ item }) => {
-                                return (
-                                    <CommentComponent
-                                        name={item.user.name}
-                                        time={'Commented on ' + item.time}
-                                        comment={item.body}
-                                    />
-
-                                )
+                    <Card>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
                             }}
+                        >
+                            <Avatar
+                                containerStyle={{ backgroundColor: "#1983ED" }}
+                                rounded
+                                icon={{ name: "user", type: "font-awesome", color: "black" }}
+                                activeOpacity={1}
+                            />
+                            <Text h4Style={{ padding: 10 }} h4>
+                                {info.user.name}
+                            </Text>
+                        </View>
+                        <Text style={{ fontStyle: "italic", fontSize: 10 }}>{info.time}</Text>
+                        <Text
+                            style={{
+                                paddingVertical: 10,
+                                fontSize: 16,
+                            }}
+                        >
+                            {info.body}
+                        </Text>
+                        <Card.Divider />
+                        <View
+                            style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+                        >
+
+
+
+                        </View>
+
+                        <Input
+                            placeholder="Write a Comment"
+                            leftIcon={<Entypo name="pencil" size={24} color="black" />}
+                            onChangeText={function (currentInput) {
+                                setComment(currentInput)
+                            }}
+
                         />
+                        <Button title="Comment" type="outline" onPress={function () {
 
 
-                    </ScrollView>
+
+                            let newcomment = {
+
+                                postid: info.postid,
+                                commentid: auth.Currentuser.email +
+                                    moment().format('YYYY-MM-DD hh:mm:ss a'),
+                                user: auth.Currentuser,
+                                time: moment().format('DD MMM, YYYY'),
+                                body: comment,
+                            };
+
+                            if (postcomments == undefined) {
+                                setPostComments([newcomment]);
+                            } else {
+                                setPostComments([...postcomments, newcomment]);
+                            }
+
+                            if (comments == undefined) {
+                                setComments([newcomment]);
+                                storeDataJSON('Comments', [newcomment]);
+                            } else {
+                                setComments([...comments, newcomment]);
+                                addDataJSON('Comments', newcomment);
+                            }
+                        }} />
+                    </Card>
+
+
+
+                    <FlatList
+                        data={postcomments}
+                        keyExtractor={(item) => item.commentid}
+
+                        scrollsToTop={true}
+                        renderItem={({ item }) => {
+                            return (
+                                <CommentComponent
+                                    name={item.user.name}
+                                    time={item.time}
+                                    comment={item.body}
+                                />
+
+                            )
+                        }}
+                    />
+
+
 
 
 

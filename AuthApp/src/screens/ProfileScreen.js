@@ -59,7 +59,7 @@ const ProfileScreen = (props) => {
             </View>
 
 
-            <Text style={styles.textStyle2}>Here's Detail About {auth.Currentuser.name}</Text>
+            <Text style={styles.textStyle3}>Here's detail about {auth.Currentuser.name}</Text>
 
 
 
@@ -73,12 +73,12 @@ const ProfileScreen = (props) => {
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
               <MaterialIcons name="place" size={24} color="black" />
-              <Text style={styles.textStyle}>Address: Pabna Sadar,pabna</Text>
+              <Text style={styles.textStyle}>Address: Somewhere in Europe</Text>
             </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
               <MaterialIcons name="work" size={24} color="black" />
-              <Text style={styles.textStyle}>Works At, SamSung RnD</Text>
+              <Text style={styles.textStyle}>Works At, FIFA</Text>
             </View>
             <Card.Divider></Card.Divider>
 
@@ -118,6 +118,16 @@ const styles = StyleSheet.create({
     textAlign: 'center'
 
   },
+
+  textStyle3: {
+    fontSize: 20,
+    color: "black",
+    justifyContent: 'center',
+    marginVertical: 20,
+    textAlign: 'center'
+
+  },
+
   image: {
     flex: 1,
     resizeMode: "cover",
