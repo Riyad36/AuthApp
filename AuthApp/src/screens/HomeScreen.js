@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View, StyleSheet, FlatList } from "react-native";
-import {
-  Card,
-  Button,
-  Text,
-  Avatar,
-  Input,
-  Header,
-} from "react-native-elements";
+import { ScrollView, View, StyleSheet, FlatList, ActivityIndicator} from "react-native";
+import {Card,Button,Text,Avatar,Input,Header} from "react-native-elements";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { AuthContext } from "../Provider/AuthProvider";
 import moment from 'moment';
 import PostComponent from "../components/PostComponent"
 import { getDataJSON, storeDataJSON, addDataJSON, } from '../functions/AsyncStorageFunctions';
-
+import {LogBox} from 'react-native';
 
 const HomeScreen = (props) => {
 
@@ -21,15 +14,18 @@ const HomeScreen = (props) => {
   const [loading, setLoading] = useState(false);
   const [post, setPost] = useState('');
 
+
   const loadPosts = async () => {
     setLoading(true);
 
     let allpost = await getDataJSON('Posts');
     setPosts(allpost);
+    setLoading(false);
   };
 
   useEffect(() => {
     loadPosts();
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
 
 
@@ -39,8 +35,7 @@ const HomeScreen = (props) => {
       {(auth) => (
 
 
-        <ScrollView style={styles.viewStyle}>
-          <View>
+        <View style={styles.viewStyle}>
           <Header
             leftComponent={{
               icon: "menu",
@@ -59,6 +54,8 @@ const HomeScreen = (props) => {
               },
             }}
           />
+
+          <ScrollView>
 
 
             <Card>
@@ -88,34 +85,40 @@ const HomeScreen = (props) => {
                     setPosts([...posts, newpost]);
                     addDataJSON('Posts', newpost);
                   }
+                  this.Input.clear()
+                  setPost('');
                 }}
-
+                
               />
+              <ActivityIndicator
+              size={'large'}
+              color={'blue'}
+              animating={loading}
+            />
 
             </Card>
-            </View>
 
 
+            <FlatList
+              data={posts}
+              inverted={true}
+              keyExtractor={(item) => item.postid}
+              renderItem={({ item }) => {
+                return (
+                  <PostComponent
+                    author={item.user.name}
+                    title={item.time}
+                    body={item.body}
+                    navigation={props.navigation}
+                    post={item}
+                  />
+                );
+              }}
+            />
 
+          </ScrollView>
 
-          <FlatList
-            data={posts}
-            inverted={true}
-            keyExtractor={(item) => item.postid}
-            renderItem={({ item }) => {
-              return (
-                <PostComponent
-                  author={item.user.name}
-                  title={item.time}
-                  body={item.body}
-                  navigation={props.navigation}
-                  post={item}
-                />
-              );
-            }}
-          />
-
-        </ScrollView>
+        </View>
 
       )}
     </AuthContext.Consumer>
@@ -128,10 +131,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "blue",
   },
-  
   viewStyle: {
     flex: 1,
-    backgroundColor: "#DCDDDF",
+    backgroundColor:"#DCDDDF",
   },
 }
 );

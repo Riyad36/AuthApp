@@ -70,9 +70,12 @@ const SignInScreen = (props) => {
 
                         }}
                     />
+                        <Text></Text>
+
+
 
                     <Button
-                        icon={<AntDesign name="user" size={24} color="black" />}
+                        icon={<AntDesign name="user" size={24} color="#1983ED" />}
                         title="Don't Have Any Account? Sign Up"
                         type='clear'
                         onPress={function () {

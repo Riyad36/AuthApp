@@ -37,11 +37,10 @@ const CommentComponent = (props) => {
                     {props.time}
                 </Text>
                 </View>
-
                 
 
                 <Text style={{ paddingHorizontal: 10, marginTop: 10 }}>
-                    <Text style={{fontSize: 14}}>{props.comment}</Text>
+                    <Text>{props.comment}</Text>
                 </Text>
         </Card>
 

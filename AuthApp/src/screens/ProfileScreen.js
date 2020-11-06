@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, ImageBackground, StyleSheet, AsyncStorage } from "react-native";
+import { View, Image, ImageBackground, StyleSheet, TouchableOpacity, AsyncStorage } from "react-native";
 import { Text, Card, Button, Avatar, Header } from "react-native-elements";
 import { AuthContext } from "../Provider/AuthProvider";
 import { FontAwesome } from '@expo/vector-icons';
@@ -35,13 +35,19 @@ const ProfileScreen = (props) => {
 
           <ImageBackground source={image} style={styles.image}>
 
-            <Image
-              marginTop={50}
-              style={{ width: 200, height: 200, }}
-              resizeMode="contain"
-              alignSelf="center"
-              source={require('./../../assets/photo.jpg')}
-            />
+            <TouchableOpacity>
+
+              <Image
+                marginTop={50}
+                style={{ width: 200, height: 200, borderRadius: 200 / 2 }}
+                resizeMode="contain"
+                alignSelf="center"
+                source={require('./../../assets/leo.jpg')}
+              />
+
+            </TouchableOpacity>
+
+
 
             <Text></Text>
 
@@ -59,26 +65,26 @@ const ProfileScreen = (props) => {
             </View>
 
 
-            <Text style={styles.textStyle3}>Here's detail about {auth.Currentuser.name}</Text>
+            <Text style={styles.textStyle3}>Here's Detail About {auth.Currentuser.name}</Text>
 
 
 
 
             <Card.Divider></Card.Divider>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 15 }}>
               <FontAwesome name="calendar" size={24} color="black" />
-              <Text style={styles.textStyle}>Born On 15th March,1997</Text>
+              <Text style={styles.textStyle}>Born On 24th June, 1987</Text>
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 15 }}>
               <MaterialIcons name="place" size={24} color="black" />
-              <Text style={styles.textStyle}>Address: Somewhere in Europe</Text>
+              <Text style={styles.textStyle}>Address: Rosario, Argentina</Text>
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 15 }}>
               <MaterialIcons name="work" size={24} color="black" />
-              <Text style={styles.textStyle}>Works At, FIFA</Text>
+              <Text style={styles.textStyle}>Works At, Argentina, Barcelona</Text>
             </View>
             <Card.Divider></Card.Divider>
 
@@ -120,8 +126,8 @@ const styles = StyleSheet.create({
   },
 
   textStyle3: {
-    fontSize: 20,
-    color: "black",
+    fontSize: 15,
+    color: "#000000",
     justifyContent: 'center',
     marginVertical: 20,
     textAlign: 'center'
